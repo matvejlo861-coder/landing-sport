@@ -2,7 +2,7 @@
 const CFG={trial:10,trialPrice:1,price:990,period:30,cancelAccessDays:3};
 const fmtD=d=>d.toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'});
 const today=new Date(),nextD=new Date(today.getTime()+CFG.trial*864e5);
-const T=fmtD(today),N=fmtD(nextD);
+const N=fmtD(nextD);
 const subLine=`через ${CFG.trial} дней ${CFG.price} ₽ каждые ${CFG.period} дней`;
 const Q=[
 {t:'Начнём с тебя.',d:'Пол и возраст помогут подобрать базовые параметры программы. Тест рассчитан на взрослых.',k:'sa'},
@@ -23,7 +23,7 @@ function expireDemoAccess(){if(S.paid&&S.cancelled&&S.accessUntil&&Date.now()>=S
 function cancelUntilText(){return S.accessUntil?fmtD(new Date(S.accessUntil)):'—'}
 try{if(localStorage.getItem('formPlanDemoAccount'))saveDemoAccount()}catch{}
 const $=id=>document.getElementById(id),esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const foot=`<p class="demo">Даты и данные демонстрационные: оформление ${T}. Платёж на этом макете не выполняется.</p>`;
+const foot='';
 function ok(){const q=Q[S.q],a=S.a;if(q.k==='sa')return a.age>=18&&a.age<=99;if(q.k==='hw')return a.h>=100&&a.h<=250&&a.w>=30&&a.w<=300;if(q.k==='lim')return a.lim==='Нет известных ограничений'||(a.lim==='Есть ограничения'&&String(a.note||'').trim().length>=5);return !!a[q.k]}
 function ctx(t,m){const c=$('ctx');c.textContent=t;c.className='ctx'+(m?' m':'')}
 function buildPlan(a){
@@ -86,7 +86,7 @@ return `<div class="qwrap"><button class="back" data-a="back">← Назад</bu
 load(){ctx('Твой план',1);const a=S.a;return `<div class="ld"><div><div class="big">09/09</div><h2 style="margin-top:16px">Подбираем программу…</h2><p class="lead" style="margin:0 auto">Сопоставляем цель, уровень и твой график. Обычно это занимает до 3 секунд.</p><div class="pbar"><i></i></div><p class="small" style="margin-top:20px">Цель учтена · График собран · Формируем план</p></div></div>`},
  prog(){ctx('Твой план',1);const a=S.a,d=(a.days||'3 дня').split(' ')[0],m=(a.min||'30 минут').split(' ')[0],p=buildPlan(a);return `<div class="split"><div><p class="kick">Подбор завершён / Демо</p><h1 style="font-size:clamp(36px,7vw,64px)">${p.title}.</h1><p class="lead">${p.days} тренировок в неделю по ${p.minutes} минут. План учитывает твою цель — ${p.focus}.</p><div class="card prof"><p class="kick" style="margin:0">Твой демо-профиль</p><b>${esc(a.sex)} · ${esc(a.age)} лет · ${esc(a.h)} см · ${esc(a.w)} кг</b><dl><dt>Цель</dt><dd>${esc(a.goal||'')}</dd><dt>Уровень</dt><dd>${esc(a.lvl||'')}</dd><dt>Место</dt><dd>${esc(a.place||'')}</dd><dt>Ритм</dt><dd>${d} дн. в неделю, по ${m} минут</dd><dt>Питание</dt><dd>${esc(a.diet||'')}</dd><dt>Ограничения</dt><dd>${a.lim==='Есть ограничения'?esc(a.note||'указаны'):'нет известных'}</dd></dl></div></div>
  <div><h2 style="font-size:clamp(26px,4vw,36px)">Твой план на неделю</h2><div class="opts">${p.sessions.slice(0,3).map((s,i)=>`<div class="card"><b>0${i+1} / ${s.name}</b>${s.exercises.slice(0,3).map(x=>`<p class="small" style="margin:6px 0 0">${x[0]} · ${x[1]}</p>`).join('')}</div>`).join('')}</div>
-  <p class="kick">Превью питания и тренировок</p><div class="pdfs plan-preview"><div class="pg"><small>ФОРМА ПОД ТЕБЯ / ${esc(String(a.goal||'').toUpperCase())}</small><h4>${p.title}</h4><p><span>Фокус</span><b>${esc(a.goal||'')}</b></p>${p.meals.map(x=>`<p><span>${x[0]}</span><b>${x[1]}</b></p>`).join('')}<em>${p.nutritionHint}</em></div><div class="pg"><small>ФОРМА ПОД ТЕБЯ / ТРЕНИРОВКИ</small><h4>${p.sessions[0].name}</h4>${p.sessions[0].exercises.map(x=>`<p><span>${x[0]}</span><b>${x[1]}</b></p>`).join('')}<em>${p.focus}. ${p.rest}. Подбирай нагрузку по самочувствию.</em></div></div>
+  <p class="kick">Превью питания и тренировок</p><div class="pdfs plan-preview"><div class="pg"><small>ОРИЕНТИР ПО ПИТАНИЮ / ПРИМЕР ДНЯ</small><h4>${p.title}</h4><p><span>Фокус</span><b>${esc(a.goal||'')}</b></p>${p.meals.slice(0,3).map(x=>`<p><span>${x[0]}</span><b>${x[1]}</b></p>`).join('')}<em>Показана часть меню. Полные рекомендации и замены — в программе.</em></div><div class="pg"><small>ТРЕНИРОВКИ / ФРАГМЕНТ ПЛАНА</small><h4>${p.sessions[0].name}</h4>${p.sessions[0].exercises.slice(0,3).map(x=>`<p><span>${x[0]}</span><b>${x[1]}</b></p>`).join('')}<em>Это часть тренировки. Остальной план и рекомендации по нагрузке — в программе.</em></div></div>
  <p class="small">Программа не заменяет консультацию врача. Не обещаем конкретные изменения веса или сроки: результат зависит от множества индивидуальных факторов.</p><button class="btn" style="margin-top:20px" data-a="pay">Получить программу →</button></div></div>`},
 pay(){ctx('Оформление заказа',1);const p=S.pay,bad=p==='error',busy=p==='proc'||p==='done',fail=p==='fail';
 const head={idle:'Твоя программа готова',error:'Проверь e-mail',proc:'Проверяем оплату',done:'Оплата прошла',fail:'Платёж не прошёл'}[p];
