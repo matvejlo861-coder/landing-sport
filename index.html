@@ -83,9 +83,13 @@ textarea.in{padding:14px 16px;min-height:96px;resize:vertical}
 .in.bad{border-color:var(--err)}.msg.bad{color:var(--err)}
 .msg{font-size:13px;color:var(--mut);margin:6px 0 16px}
 .two{display:grid;gap:16px;grid-template-columns:repeat(2,minmax(0,1fr))}
-.ld{display:grid;place-items:center;text-align:center;min-height:50vh}
-.ld .big{font-size:96px;font-weight:800;color:var(--ac);line-height:1}
-.pbar{height:6px;background:var(--bd);border-radius:3px;overflow:hidden;max-width:420px;margin:24px auto 0}.pbar i{display:block;height:100%;width:0;background:var(--ac);animation:fill 2.6s linear forwards}
+.ld{display:grid;place-items:center;text-align:center;min-height:min(68vh,680px);padding:20px 0}
+.loading-content{width:100%;max-width:960px;margin:0 auto}
+.ld .big{font-size:clamp(58px,13vw,112px);font-weight:800;color:var(--ac);line-height:1;letter-spacing:-.04em}
+.loading-title{margin:20px 0 0;font-size:clamp(34px,7.5vw,62px)}
+.loading-screen .lead{max-width:780px;margin:18px auto 0}
+.pbar{width:min(100%,520px);height:7px;background:var(--bd);border-radius:4px;overflow:hidden;margin:28px auto 0}.pbar i{display:block;height:100%;width:0;background:var(--ac);animation:fill 3s linear forwards}
+.loading-detail{margin:22px 0 0}
 @keyframes fill{to{width:100%}}
 .prof dl{display:grid;grid-template-columns:minmax(72px,.45fr) minmax(0,1fr);gap:8px 16px;margin:12px 0 0;font-size:14px}.prof dt{color:var(--mut)}.prof dd{min-width:0;margin:0;overflow-wrap:anywhere}
 .pdfs{display:flex;gap:16px;overflow-x:auto;padding:4px 0 12px;min-width:0}
@@ -177,6 +181,6 @@ main{padding:56px 0 80px}
 <body>
 <header><div class="wrap"><button class="brand" data-a="home" aria-label="На главную">ФОРМА ПОД ТЕБЯ</button><div class="ctx" id="ctx"></div><button class="menu-toggle" type="button" data-a="menu" aria-label="Открыть меню" aria-expanded="false" aria-controls="site-menu"><span></span><span></span><span></span></button><nav class="menu-panel" id="site-menu" aria-label="Основное меню"><button class="menu-item" data-a="home">Главная</button><button class="menu-item" data-a="reviews">Отзывы<em>Истории и примеры программы</em></button><button class="menu-item" data-a="cab">Личный кабинет<em>Программа и управление доступом</em></button></nav></div></header>
 <main><div class="wrap" id="app"></div></main>
-<script src="app.js" defer></script>
+<script src="app.js?v=20261019-loader" defer></script>
 </body>
 </html>
